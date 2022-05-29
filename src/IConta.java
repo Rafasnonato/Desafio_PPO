@@ -8,5 +8,7 @@ public interface IConta {
 
     void imprimirExtrato();
 
+    void aumentoMensal(double perc);
+
 
     }
