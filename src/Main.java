@@ -1,7 +1,11 @@
 public class Main {
+
     public static void main(String[] args) {
-        Cliente rafael = new Cliente();
+
+        AgenciaBancaria.operacoes();
+        /*Cliente rafael = new Cliente("Rafael");
         rafael.setNome( " Rafael ");
+
 
         Conta cc = new ContaCorrente(rafael);
         Conta poupanca = new ContaPoupanca(rafael);
@@ -28,9 +32,7 @@ public class Main {
         poupanca1.aumentoMensal(1);
 
         cc1.imprimirExtrato();
-        poupanca1.imprimirExtrato();
-
-
+        poupanca1.imprimirExtrato();*/
 
     }
 }

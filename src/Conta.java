@@ -1,65 +1,91 @@
-public abstract class Conta implements IConta {
+import Utilitarios.Utils;
+
+public class Conta implements IConta {
 
     private static final int AGENCIA_PADRAO = 1;
     private static int SEQUENCIAL = 1;
 
     protected int agencia;
     protected int conta;
-    protected double saldo = 0;
+    protected double saldo = 0d;
     protected Cliente cliente;
 
     public Conta( Cliente cliente) {
         this.agencia = AGENCIA_PADRAO;
-        this.conta = SEQUENCIAL++;
+        this.conta = SEQUENCIAL;
         this.cliente = cliente;
-    }
-
-
-    @Override
-    public void sacar(double valor) {
-        if(saldo == 0 && valor > saldo){
-            System.out.println("Saldo insuficiente");
-        }else {
-            saldo-=valor;
-        }
-
-    }
-
-    @Override
-    public void depositar(double valor) {
-        saldo+=valor;
-    }
-
-    @Override
-    public void transferir(double valor, Conta contaDestino) {
-        if(saldo == 0 && valor > saldo){
-            System.out.println("Saldo insuficiente");
-        }else {
-            this.sacar(valor);
-            contaDestino.depositar(valor);
-        }
-    }
-    @Override
-    public void aumentoMensal(double perc){
-        saldo = saldo * ((perc/100)+1);
-    }
-
-    public int getAgencia() {
-        return agencia;
+        SEQUENCIAL +=1;
     }
 
     public int getConta() {
         return conta;
     }
 
+    public void setConta(int conta) {
+        this.conta = conta;
+    }
+
     public double getSaldo() {
         return saldo;
     }
 
-    protected void imprimirInfosComuns() {
-        System.out.println(String.format("Titular: %s",this.cliente.getNome()));
-        System.out.println(String.format("Agencia: %d",this.agencia));
-        System.out.println(String.format("Conta: %d",this.conta));
-        System.out.println(String.format("Saldo: %.2f",this.saldo));
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    @Override
+    public void depositar(double valor) {
+        if (valor>0) {
+            saldo+=valor;
+            System.out.println("Seu depósito foi realizado com sucesso!");
+        } else System.out.println("Não foi possivel realizar o depósito!");
+    }
+
+    @Override
+    public void sacar(double valor) {
+        if (valor > 0){
+            if(saldo == 0 || valor > saldo){
+                System.out.println("Saldo insuficiente!");
+            }else {
+                saldo-=valor;
+                System.out.println("Saque realizado com sucesso!");
+            }
+        }else System.out.println("Não foi possivel realizar o saque!");
+    }
+
+    @Override
+    public void transferir(Conta contaDestino, double valor) {
+        if (valor>0) {
+            if (saldo == 0 || valor > saldo) {
+                System.out.println("Saldo insuficiente!");
+            } else {
+                saldo-=valor;
+                contaDestino.saldo = contaDestino.getSaldo()+valor;
+                System.out.println("Transferencia realizado com sucesso!");
+            }
+        }else System.out.println("Não foi possivel realizar a transferência!");
+    }
+
+    @Override
+    public void imprimirExtrato() {
+        System.out.println(toString());
+    }
+
+    public String toString() {
+        return "\nBanco: " + this.agencia+
+                "\nConta: " + this.conta +
+                "\nNome: " + this.cliente.getNome()+
+                "\nCPF: "+ this.cliente.getCpf()+
+                "\nEmail: "+ this.cliente.getEmail()+
+                "\nSaldo: " + Utils.doubleToString(this.getSaldo())+
+                "\n";
     }
 }
